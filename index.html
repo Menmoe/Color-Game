@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Color Game</title>
+        <style>
+            .wrongClass {
+                animation: wrongAnimation 0.3s;
+            }
+            @keyframes wrongAnimation {
+                0% {
+                    background-color: red;
+                    color: white;
+                }
+                20% {
+                    transform: translateX(10px);
+                }
+                40% {
+                    transform: translateX(-10px);
+                }
+                60% {
+                    transform: translateX(8px);
+                }
+                80% {
+                    transform: translateX(-8px);
+                }
+                100% {
+                    transform: translateX(0px);
+                    background-color: rgb(30, 30, 30);
+                }
+            }
+            html {
+               user-select: none;
+               color: white;
+               background-color: aqua;
+               text-align: center; 
+               font-size: 35px;
+            }
+            .box {
+                height: 200px;
+                width: 200px;
+                background: rgb(30, 30, 30);
+                margin: 10px;
+                display: inline-block;
+                border-radius: 10px;
+                font-size: 35px;
+                text-align: center;
+                line-height: 200px;
+                position: relative;
+                top: 50px;
+                font-style: oblique;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .box:hover {
+                transform: translateY(-3px);
+                opacity: 0.7;
+            }
+            #task {
+                position: relative;
+                top: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="score">0</div>
+        <div id="page">
+            <div id="box1" class="box" onclick="check(this);">Red</div>
+            <div id="box2" class="box" onclick="check(this);">Yellow</div>
+            <div id="task"></div>
+            <div id="box3" class="box" onclick="check(this);">Green</div>
+            <div id="box4" class="box" onclick="check(this);">Blue</div>
+            <div id="timer">4</div>
+        </div>
+    </body>
+    <script>
+        let score = 0;
+        let currentTime = 4;
+        let counter;
+
+        setInterval(() => {
+            document.getElementById("timer").innerHTML = currentTime;
+            document.getElementById("score").innerHTML = "Score: " + score;
+        }, 1);
+        let timer = function() {
+            currentTime--;
+            if(currentTime === 0) {
+                currentTime = 4;
+                score = 0;
+                nextColor();
+            }
+        }
+        function check(theDiv) {
+            if(theDiv.style.color === document.getElementById("task").innerHTML) {
+                nextColor();
+                score++;
+                currentTime = 4;
+                clearInterval(counter);
+                counter = setInterval(timer, 1000);
+            }
+            else {
+                nextColor();
+                score = 0;
+                theDiv.className += " wrongClass";
+                setTimeout(() => {
+                        theDiv.className = "box";
+                }, 300);
+            }
+        }
+        function nextColor() {
+            let colors = ['red', 'yellow', 'green', 'blue'];
+            let randomColor = Math.floor(Math.random() * colors.length);
+            document.getElementById("task").innerHTML = colors[randomColor];
+            for(i = 1; i < 5; i++) {
+                randomColor = Math.floor(Math.random() * colors.length);
+                document.getElementById("box" + i).style.color = colors[randomColor];
+                colors.splice(randomColor, 1);
+            }
+        }
+        nextColor();
+        counter = setInterval(timer, 1000);
+    </script>
+</html>

@@ -8,8 +8,8 @@
             }
             @keyframes wrongAnimation {
                 0% {
-                    background-color: red;
-                    color: white;
+                   background-color: red;
+                   color: white; 
                 }
                 20% {
                     transform: translateX(10px);
@@ -21,7 +21,7 @@
                     transform: translateX(8px);
                 }
                 80% {
-                    transform: translateX(-8px);
+                    transform: translateX(-8);
                 }
                 100% {
                     transform: translateX(0px);
@@ -29,80 +29,85 @@
                 }
             }
             html {
-               user-select: none;
-               color: white;
-               background-color: aqua;
-               text-align: center; 
-               font-size: 35px;
+                background-color: aqua;
+                user-select: none;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 35px;
+                color: white;
+                text-align: center;
+                font-size: 35px;
             }
             .box {
                 height: 200px;
                 width: 200px;
-                background: rgb(30, 30, 30);
+                background-color: rgb(30, 30, 30);
                 margin: 10px;
                 display: inline-block;
-                border-radius: 10px;
-                font-size: 35px;
                 text-align: center;
                 line-height: 200px;
-                position: relative;
-                top: 50px;
-                font-style: oblique;
+                font-size: 35px;
                 cursor: pointer;
                 transition: all 0.2s;
+                border-radius: 10px;
+                font-size: 35px;
             }
             .box:hover {
                 transform: translateY(-3px);
                 opacity: 0.7;
             }
-            #task {
+            #page {
                 position: relative;
                 top: 50px;
+                font-style: oblique;
+                font-size: 35px;
             }
         </style>
     </head>
     <body>
         <div id="score">0</div>
         <div id="page">
-            <div id="box1" class="box" onclick="check(this);">Red</div>
-            <div id="box2" class="box" onclick="check(this);">Yellow</div>
+            <div class="box" id="box1" onclick="check(this);">Yellow</div>
+            <div class="box" id="box2" onclick="check(this);">Green</div>
             <div id="task"></div>
-            <div id="box3" class="box" onclick="check(this);">Green</div>
-            <div id="box4" class="box" onclick="check(this);">Blue</div>
-            <div id="timer">4</div>
+            <div class="box" id="box3" onclick="check(this);">Red</div>
+            <div class="box" id="box4" onclick="check(this);">Blue</div>
+            <div id="timer"></div>
         </div>
     </body>
     <script>
-        let score = 0;
-        let currentTime = 4;
+        const score = document.getElementById("score");
+        let currentScore = 0;
         let counter;
+        let currentTime = 4;
 
         setInterval(() => {
-            document.getElementById("timer").innerHTML = currentTime;
-            document.getElementById("score").innerHTML = "Score: " + score;
+            score.innerHTML = "Score: " + currentScore;
         }, 1);
-        let timer = function() {
+
+        const timer = function() {
             currentTime--;
+            document.getElementById("timer").innerHTML = currentTime;
             if(currentTime === 0) {
                 currentTime = 4;
-                score = 0;
+                currentScore = 0;
                 nextColor();
             }
         }
         function check(theDiv) {
             if(theDiv.style.color === document.getElementById("task").innerHTML) {
+                currentScore++;
                 nextColor();
-                score++;
+
                 currentTime = 4;
                 clearInterval(counter);
                 counter = setInterval(timer, 1000);
             }
             else {
                 nextColor();
-                score = 0;
+                currentScore = 0;
                 theDiv.className += " wrongClass";
                 setTimeout(() => {
-                        theDiv.className = "box";
+                    theDiv.className = "box";
                 }, 300);
             }
         }
